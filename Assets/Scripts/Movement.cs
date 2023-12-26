@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour
 
     private void Start()
     {
+        _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _coroutine = StartCoroutine(Move());
     }

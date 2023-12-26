@@ -11,30 +11,27 @@ public class PlaySoundComponent : MonoBehaviour
     public AlarmSystem Alarm => _alarm;
 
     private float _minVolumeAlarm = 0.0f;
-    private float _maxVolumeAlarm = 2.0f;
+    private float _maxVolumeAlarm = 1.0f;
 
     private void OnEnable()
     {
         Alarm.Registered += StartPlayAudio;
-        Alarm.Disarmed += StopPlayAudio;
-        Debug.Log("OnEnable");
     }
 
     private void OnDisable()
     {
-        Alarm.Registered -= StartPlayAudio;
-        Alarm.Disarmed -= StopPlayAudio;
-        Debug.Log("OnDisable");
+        Alarm.Disarmed -= StopPlayAudio;;
     }
+
     private void StartPlayAudio()
     {
         _audio.Play();
         StartCoroutine(SoundOn(_maxVolumeAlarm));
-        Debug.Log("Alarm");
     }
+
     private void StopPlayAudio()
     {
-        StopCoroutine(SoundOff(_minVolumeAlarm));
+        StartCoroutine(SoundOff(_minVolumeAlarm));
     }
 
     private IEnumerator SoundOn(float currentVolume)
@@ -46,11 +43,12 @@ public class PlaySoundComponent : MonoBehaviour
         }
     }
 
-    private IEnumerator SoundOff(float currentVolume)
+    private IEnumerator SoundOff(float targetVolume)
     {
-        while (_audio.volume != currentVolume)
+        while (_audio.volume > 0)
         {
-            yield return new WaitWhile(() => _audio.volume != currentVolume);
+            _audio.volume = Mathf.MoveTowards(_audio.volume, targetVolume, _transitionSpeed * Time.deltaTime);
+            yield return null;
         }
 
         if (_audio.volume == 0)
