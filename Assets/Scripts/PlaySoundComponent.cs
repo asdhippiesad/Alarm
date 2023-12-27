@@ -10,48 +10,51 @@ public class PlaySoundComponent : MonoBehaviour
 
     public AlarmSystem Alarm => _alarm;
 
-    private float _minVolumeAlarm = 0.0f;
+    private float _minVolumeAlarm = 0.2f;
     private float _maxVolumeAlarm = 1.0f;
 
     private void OnEnable()
     {
         Alarm.Registered += StartPlayAudio;
+        Alarm.Disarmed += StopPlayAudio;
     }
 
     private void OnDisable()
     {
-        Alarm.Disarmed -= StopPlayAudio;;
+        Alarm.Registered -= StartPlayAudio;
+        Alarm.Disarmed -= StopPlayAudio;
     }
 
     private void StartPlayAudio()
     {
-        _audio.Play();
-        StartCoroutine(SoundOn(_maxVolumeAlarm));
+        StartCoroutine(SoundOn());
     }
 
     private void StopPlayAudio()
     {
-        StartCoroutine(SoundOff(_minVolumeAlarm));
+        StartCoroutine(SoundOff());
     }
 
-    private IEnumerator SoundOn(float currentVolume)
+    private IEnumerator SoundOn()
     {
-        while (_audio.volume != currentVolume)
+        while (_audio.volume < _maxVolumeAlarm)
         {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, currentVolume, _transitionSpeed * Time.deltaTime);
-            yield return null;
-        }
-    }
-
-    private IEnumerator SoundOff(float targetVolume)
-    {
-        while (_audio.volume > 0)
-        {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, targetVolume, _transitionSpeed * Time.deltaTime);
+            _audio.volume = Mathf.MoveTowards(_audio.volume, _maxVolumeAlarm, _transitionSpeed * Time.deltaTime);
             yield return null;
         }
 
-        if (_audio.volume == 0)
+        _audio.Play();
+    }
+
+    private IEnumerator SoundOff()
+    {
+        while (_audio.volume > _minVolumeAlarm)
+        {
+            _audio.volume = Mathf.MoveTowards(_audio.volume, _minVolumeAlarm, _transitionSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        if (_audio.volume != _minVolumeAlarm)
         {
             _audio.Stop();
         }
