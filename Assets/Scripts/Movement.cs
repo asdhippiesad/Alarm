@@ -12,26 +12,25 @@ public class Movement : MonoBehaviour
     private Coroutine _coroutine;
     private Animator _animator;
 
-    private void Start()
+    private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _coroutine = StartCoroutine(Move());
     }
 
-    private IEnumerator Move()
+    private void Update()
     {
-        while (enabled)
-        {
-            float vertical = Input.GetAxisRaw(Vertical);
-            float horizontal = Input.GetAxisRaw(Horizontal);
+        Move();
+    }
 
-            float walkAnimation = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
-            _animator.SetFloat("Walk", walkAnimation);
+    private void Move()
+    {
+        float vertical = Input.GetAxisRaw(Vertical);
+        float horizontal = Input.GetAxisRaw(Horizontal);
 
-            transform.Translate(new Vector2(horizontal, vertical) * _speed * Time.deltaTime);
+        float walkAnimation = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
+        _animator.SetFloat("Walk", walkAnimation);
 
-            yield return null;
-        }
+        transform.Translate(new Vector2(horizontal, vertical) * _speed * Time.deltaTime);
     }
 }

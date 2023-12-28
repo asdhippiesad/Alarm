@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AlarmSystem : MonoBehaviour
+public class AlarmCollisionHandler : MonoBehaviour
 {
     public event Action Registered;
     public event Action Disarmed;
@@ -13,6 +13,7 @@ public class AlarmSystem : MonoBehaviour
             Registered?.Invoke();
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent<Movement>(out Movement mover))
@@ -20,5 +21,4 @@ public class AlarmSystem : MonoBehaviour
             Disarmed?.Invoke();
         }
     }
-
 }

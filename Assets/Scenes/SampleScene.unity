@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df81997cbbd62f145a1a8abe80be8bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _transitionSpeed: 5
+  _transitionSpeed: 20
   _alarm: {fileID: 109149645}
   _audio: {fileID: 109149644}
 --- !u!82 &109149644
@@ -239,7 +239,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: a3567fa5639a3ae43a383d5b3145b6c5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.637
+  m_Volume: 0.463
   m_Pitch: 1.38
   Loop: 0
   Mute: 0
@@ -367,9 +367,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.45663098, y: 0}
   serializedVersion: 2
-  m_Radius: 0.135
+  m_Radius: 1.7370757
 --- !u!50 &109149647
 Rigidbody2D:
   serializedVersion: 4
@@ -378,7 +378,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109149640}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -1239,7 +1239,7 @@ Transform:
   m_GameObject: {fileID: 1133623365}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3997, y: -3.4499, z: 0}
+  m_LocalPosition: {x: -5.03, y: -3.4499, z: 0}
   m_LocalScale: {x: 0.7137592, y: 0.7230065, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
