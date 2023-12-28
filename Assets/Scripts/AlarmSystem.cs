@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class AlarmCollisionHandler : MonoBehaviour
+public class AlarmDeterminer : MonoBehaviour
 {
     public event Action Registered;
     public event Action Disarmed;

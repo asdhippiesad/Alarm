@@ -1,10 +1,12 @@
-using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class Movement : MonoBehaviour
 {
     private const string Vertical = nameof(Vertical);
     private const string Horizontal = nameof(Horizontal);
+    private const string Walk = nameof(Walk);
 
     [SerializeField] private float _speed;
 
@@ -29,7 +31,7 @@ public class Movement : MonoBehaviour
         float horizontal = Input.GetAxisRaw(Horizontal);
 
         float walkAnimation = Mathf.Abs(vertical) + Mathf.Abs(horizontal);
-        _animator.SetFloat("Walk", walkAnimation);
+        _animator.SetFloat(Walk, walkAnimation);
 
         transform.Translate(new Vector2(horizontal, vertical) * _speed * Time.deltaTime);
     }

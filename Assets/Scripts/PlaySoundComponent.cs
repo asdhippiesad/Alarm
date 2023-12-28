@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlaySoundComponent : MonoBehaviour
 {
     [SerializeField] private float _transitionSpeed;
-    [SerializeField] private AlarmCollisionHandler _alarm;
+    [SerializeField] private AlarmDeterminer _alarm;
     [SerializeField] private AudioSource _audio;
 
-    public AlarmCollisionHandler  Alarm => _alarm;
+    public AlarmDeterminer Alarm => _alarm;
     private Coroutine _coroutine;
 
     private float _minVolumeAlarm = 0.2f;
@@ -54,10 +54,11 @@ public class PlaySoundComponent : MonoBehaviour
     {
         while (_audio.volume > _minVolumeAlarm)
         {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, _minVolumeAlarm, _transitionSpeed * Time.deltaTime);
+            _audio.volume -= Time.deltaTime * _transitionSpeed;
             yield return null;
         }
 
-        _audio.Stop();
+        if (_audio.volume != _minVolumeAlarm)
+            _audio.Stop();
     }
 }
