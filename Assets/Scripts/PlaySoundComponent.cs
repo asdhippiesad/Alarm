@@ -8,27 +8,29 @@ public class PlaySoundComponent : MonoBehaviour
     [SerializeField] private AlarmDeterminer _alarm;
     [SerializeField] private AudioSource _audio;
 
-    public AlarmDeterminer Alarm => _alarm;
     private Coroutine _coroutine;
 
-    private float _minVolumeAlarm = 0.2f;
+    private float _minVolumeAlarm = 0.0f;
     private float _maxVolumeAlarm = 1.0f;
 
     private void OnEnable()
     {
-        Alarm.Registered += StartPlayAudio;
-        Alarm.Disarmed += StopPlayAudio;
+        _alarm.Registered += StartPlayAudio;
+        _alarm.Disarmed += StopPlayAudio;
     }
 
     private void OnDisable()
     {
-        Alarm.Registered -= StartPlayAudio;
-        Alarm.Disarmed -= StopPlayAudio;
+        _alarm.Registered -= StartPlayAudio;
+        _alarm.Disarmed -= StopPlayAudio;
     }
 
     private void StartPlayAudio()
     {
-        _coroutine = StartCoroutine(SoundOn());
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(ChangeVolume(_maxVolumeAlarm));
     }
 
     private void StopPlayAudio()
@@ -36,29 +38,15 @@ public class PlaySoundComponent : MonoBehaviour
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(SoundOff());
+        _coroutine = StartCoroutine(ChangeVolume(_minVolumeAlarm));
     }
 
-    private IEnumerator SoundOn()
+    private IEnumerator ChangeVolume(float targetVolume)
     {
-        while (_audio.volume < _maxVolumeAlarm)
+        while (_audio.volume != targetVolume)
         {
-            _audio.volume = Mathf.MoveTowards(_audio.volume, _maxVolumeAlarm, _transitionSpeed * Time.deltaTime);
+            _audio.volume = Mathf.MoveTowards(_audio.volume, targetVolume, _transitionSpeed * Time.deltaTime);
             yield return null;
         }
-
-        _audio.Play();
-    }
-
-    private IEnumerator SoundOff()
-    {
-        while (_audio.volume > _minVolumeAlarm)
-        {
-            _audio.volume -= Time.deltaTime * _transitionSpeed;
-            yield return null;
-        }
-
-        if (_audio.volume != _minVolumeAlarm)
-            _audio.Stop();
     }
 }
